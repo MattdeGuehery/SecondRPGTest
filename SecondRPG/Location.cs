@@ -1,37 +1,52 @@
-﻿using System;
+﻿using SecondRPG.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace SecondRPG
 {
-    class Location
+    public class Location : ILocation
     {
 
-        private string locName;
-        private int locID;
-        private string[] locOpts;
-        private int[] nextLocID;
+        public string Name { get; set; }
+        public int Id { get; set; }
+        public List<LocationOption> Options { get; set; }
+        public int[] NextLocation { get; set; }
 
 
-        public Location(string LocName, int LocID)
+        public Location(int locationId, string locationName)
         {
+            Id = locationId;
+            Name = locationName;
+            LocationOptions locationOptions = new LocationOptions(locationId);
+            Options = locationOptions.Options;
+        }
 
-            string locName = LocName;
-            int locID = LocID;
-
-            LocationOptions locationOptions = new LocationOptions(LocID);
-            locOpts = locationOptions.lOptions;
-
+        public Location(int locationId)
+        {
+            Id = locationId;
+            Locations Locations = new Locations();
+            Location Location = Locations.FindLocation(Id);
+            if (Location == null)
+            {
+                throw new Exception(string.Format("Unable to initialize Location for Id {0}", locationId));
+            }
+            else
+            {
+                LocationOptions locationOptions = new LocationOptions(locationId);
+                Options = locationOptions.Options;
+            }
         }
 
         public void DisplayOptions()
         {
-            int i = 1;
-            foreach (string Options in locOpts)
-            {                
-                Console.WriteLine("Option {0}   |   {1}", i, Options); }
+            int i = 0;
+            foreach (LocationOption option in Options)
+            {
+                i++;
+                Console.WriteLine("Option {0}   |   {1}", i, option.Message);
             }
-
+        }
 
     }
 }

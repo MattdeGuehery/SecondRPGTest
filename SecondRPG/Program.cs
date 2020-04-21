@@ -2,12 +2,13 @@
 
 namespace SecondRPG
 {
-    class Program
+    public class Program
     {
         static void Main(string[] args)
         {
-            Location currentLocation = new Location("Test", 1);
-            currentLocation.DisplayOptions();
+            Locations locs = new Locations();
+            Location firstLocation = locs.SelectFirstLocation();
+            firstLocation.DisplayOptions();
         }
     }
 }
